@@ -16,7 +16,7 @@ gin-standard-api is a utility library for standardizing API responses and error 
 {
   "status": 403, // HTTP status code, required
   "error": "Forbidden", // Generic error message, required
-  "message": "You do not have permission to do that." // Detailed error message, optional.
+  "message": "You do not have permission to do that." // Detailed error message, optional
 }
 ```
 
