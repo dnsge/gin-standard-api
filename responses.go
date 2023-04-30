@@ -54,6 +54,15 @@ func Data(status int, data interface{}) Res {
 	}
 }
 
+// String writes the given status and a *plain* string response. Equivalent to
+// gin.String.
+func String(status int, text string) Res {
+	return &stringResponse{
+		Status: status,
+		String: text,
+	}
+}
+
 // Redirect writes the given status code and sets the Location header. Equivalent
 // to gin.Redirect.
 func Redirect(status int, location string) Res {
@@ -115,5 +124,14 @@ func ErrorMessage(status int, error string, message string) Err {
 		Status:  status,
 		Error:   error,
 		Message: message,
+	}
+}
+
+// StringError writes the given status and a *plain* string response. Equivalent to
+// gin.String.
+func StringError(status int, text string) Err {
+	return &stringResponse{
+		Status: status,
+		String: text,
 	}
 }

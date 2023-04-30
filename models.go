@@ -45,3 +45,16 @@ type errorResponse struct {
 func (e *errorResponse) WriteError(c *gin.Context) {
 	c.JSON(e.Status, e)
 }
+
+type stringResponse struct {
+	Status int
+	String string
+}
+
+func (s *stringResponse) WriteResponse(c *gin.Context) {
+	c.String(s.Status, s.String)
+}
+
+func (s *stringResponse) WriteError(c *gin.Context) {
+	c.String(s.Status, s.String)
+}
