@@ -66,3 +66,25 @@ func DoSomething(c *gin.Context) {
     sapi.Status(http.StatusNotFound).WriteResponse(c)
 }
 ```
+
+### List of Methods
+- `RawStatus(status int) Res` 
+  - Represents a response with an empty body, i.e. `Content-Length: 0`
+- `Status(status int) Res`
+  - Represents a response with just a status and no data.
+- `Data(status int, data interface{}) Res`
+  - Represents a response with a status and some data.
+- `String(status int, text string) Res`
+  - Represents a response with a plain string body. No JSON, just plain text.
+- `Redirect(status int, location string) Res`
+  - Represents a redirect response to some location.
+- `RawErrorStatus(status int) Err`
+  - Error equivalent for `RawStatus`
+- `ErrorStatus(status int) Err`
+  - Represents an error with just a status.
+- `Error(status int, error string) Err`
+  - Represents an error with a status and a message.
+- `ErrorMessage(status int, error string, message string) Err`
+  - Represents an error with a status, message, and detailed message.
+- `StringError(status int, text string) Err`
+  - Error equivalent for `String`
