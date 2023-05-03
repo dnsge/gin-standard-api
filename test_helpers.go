@@ -10,6 +10,8 @@ func execRes(res Res) *httptest.ResponseRecorder {
 	recorder := httptest.NewRecorder()
 	c, _ := gin.CreateTestContext(recorder)
 	res.WriteResponse(c)
+	// ref: https://github.com/gin-gonic/gin/issues/1120
+	c.Writer.WriteHeaderNow()
 	return recorder
 }
 
@@ -17,6 +19,8 @@ func execErr(err Err) *httptest.ResponseRecorder {
 	recorder := httptest.NewRecorder()
 	c, _ := gin.CreateTestContext(recorder)
 	err.WriteError(c)
+	// ref: https://github.com/gin-gonic/gin/issues/1120
+	c.Writer.WriteHeaderNow()
 	return recorder
 }
 

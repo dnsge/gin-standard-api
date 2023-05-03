@@ -7,7 +7,9 @@ import (
 )
 
 func TestGetResStatus(t *testing.T) {
-	res := Status(http.StatusCreated)
+	res := RawStatus(http.StatusCreated)
+	assert.Equal(t, http.StatusCreated, GetResStatus(res))
+	res = Status(http.StatusCreated)
 	assert.Equal(t, http.StatusCreated, GetResStatus(res))
 }
 
@@ -17,7 +19,9 @@ func TestGetResBody(t *testing.T) {
 }
 
 func TestGetErrStatus(t *testing.T) {
-	err := ErrorStatus(http.StatusInternalServerError)
+	err := RawErrorStatus(http.StatusInternalServerError)
+	assert.Equal(t, http.StatusInternalServerError, GetErrStatus(err))
+	err = ErrorStatus(http.StatusInternalServerError)
 	assert.Equal(t, http.StatusInternalServerError, GetErrStatus(err))
 }
 
