@@ -19,8 +19,8 @@ func (r rawErrorStatusResponse) WriteError(c *gin.Context) {
 }
 
 type dataResponse struct {
-	Status int         `json:"status"`
-	Data   interface{} `json:"data,omitempty"`
+	Status int `json:"status"`
+	Data   any `json:"data,omitempty"`
 }
 
 func (d *dataResponse) WriteResponse(c *gin.Context) {

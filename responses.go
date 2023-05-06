@@ -47,7 +47,7 @@ func Status(status int) Res {
 //	  "status": 200,
 //	  "data": {"hello": "world"}
 //	}
-func Data(status int, data interface{}) Res {
+func Data(status int, data any) Res {
 	return &dataResponse{
 		Status: status,
 		Data:   data,

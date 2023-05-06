@@ -72,7 +72,7 @@ func DoSomething(c *gin.Context) {
   - Represents a response with an empty body, i.e. `Content-Length: 0`
 - `Status(status int) Res`
   - Represents a response with just a status and no data.
-- `Data(status int, data interface{}) Res`
+- `Data(status int, data any) Res`
   - Represents a response with a status and some data.
 - `String(status int, text string) Res`
   - Represents a response with a plain string body. No JSON, just plain text.
