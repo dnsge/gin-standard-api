@@ -27,6 +27,10 @@ func (d *dataResponse) WriteResponse(c *gin.Context) {
 	c.JSON(d.Status, d)
 }
 
+func (d *dataResponse) GetData() any {
+	return d.Data
+}
+
 type redirectResponse struct {
 	Status   int
 	Location string

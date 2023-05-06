@@ -36,3 +36,15 @@ func GetResBody(res sapi.Res) string {
 	recorder := execRes(res)
 	return recorder.Body.String()
 }
+
+// GetResData returns the data contained in the given response. This requires
+// the res to have been created via sapi.Data, otherwise nil is returned.
+func GetResData(res sapi.Res) any {
+	asData, ok := res.(interface {
+		GetData() any
+	})
+	if !ok {
+		return nil
+	}
+	return asData.GetData()
+}
