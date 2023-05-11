@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"os"
+	"sync/atomic"
 	"testing"
 )
 
@@ -175,4 +176,45 @@ func TestAlreadyHandled(t *testing.T) {
 
 	assert.Equal(t, http.StatusOK, r.StatusCode)
 	assert.Len(t, body, 0)
+}
+
+func TestHandleWithInspection(t *testing.T) {
+	var n atomic.Int32
+
+	router := gin.New()
+
+	// Inspecting good responses
+	router.GET("/handle1", HandleWithInspection(func(c *gin.Context) (Res, Err) {
+		return Status(http.StatusOK), nil
+	}, func(c *gin.Context, res Res) {
+		n.Add(1)
+		assert.Equal(t, "/handle1", c.FullPath())
+		assert.Equal(t, http.StatusOK, (res.(*dataResponse)).Status)
+	}, func(c *gin.Context, err Err) {
+		assert.FailNow(t, "Expected an OK response")
+	}))
+
+	// Inspecting error responses
+	router.GET("/handle2", HandleWithInspection(func(c *gin.Context) (Res, Err) {
+		return nil, ErrorStatus(http.StatusBadRequest)
+	}, func(c *gin.Context, res Res) {
+		assert.FailNow(t, "Expected a Bad Request response")
+	}, func(c *gin.Context, err Err) {
+		n.Add(1)
+		assert.Equal(t, "/handle2", c.FullPath())
+		assert.Equal(t, http.StatusBadRequest, (err.(*errorResponse)).Status)
+	}))
+
+	// Invoke good response
+	r := makeReq(router, "GET", "/handle1", nil)
+	r.Body.Close()
+	assert.Equal(t, http.StatusOK, r.StatusCode)
+
+	// Invoke error response
+	r = makeReq(router, "GET", "/handle2", nil)
+	r.Body.Close()
+	assert.Equal(t, http.StatusBadRequest, r.StatusCode)
+
+	// Confirm that both calls resulted in the callbacks (and thus their asserts) being called
+	assert.EqualValues(t, 2, n.Load(), "Expected both callbacks to have been invoked")
 }
